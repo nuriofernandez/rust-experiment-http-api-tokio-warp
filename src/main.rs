@@ -2,6 +2,9 @@ use warp::Filter;
 
 #[tokio::main]
 async fn main() {
+    // GET / => 200 OK with body "It works!"
+    let default = warp::path::end().map(|| "It works!");
+
     // GET /hello/warp => 200 OK with body "Hello, warp!"
     let hello = warp::path!("hello" / String)
         .map(|name| format!("Hello, {}!", name));
@@ -11,7 +14,7 @@ async fn main() {
         .map(|name| format!("Bye, {}!", name));
 
     // Map filters
-    let routes = hello.or(bye);
+    let routes = default.or(hello).or(bye);
 
     // Start the http server
     warp::serve(routes)
