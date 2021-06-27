@@ -10,7 +10,11 @@ async fn main() {
     let bye = warp::path!("bye" / String)
         .map(|name| format!("Bye, {}!", name));
 
-    warp::serve(hello)
+    // Map filters
+    let routes = hello.or(bye);
+
+    // Start the http server
+    warp::serve(routes)
         .run(([127, 0, 0, 1], 3030))
         .await;
 }
